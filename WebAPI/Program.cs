@@ -38,46 +38,41 @@ app.MapPost("/uploadimg", async (IFormFile file) =>
 	return prices is null ? Results.NotFound() : Results.Ok(prices);
 });
 
-// Prices upload
+// Prices POST
 app.MapPost("/uploadprices", (GasStationPrices prices) =>
 {
 	formFiller.SendInfo(prices);
 	return Results.Ok(prices);
 });
 
-// Stations get
-app.MapGet("/stations", async () =>
+// Brands GET
+app.MapGet("/brands", async () =>
 {
-	using var command = new MySqlCommand("" +
-		$"SELECT id_station, city, address, brand_name, id_brand FROM stations NATURAL JOIN brands;",
+	using var command = new MySqlCommand(
+		$"SELECT * FROM brands;",
 		connection);
 	using var reader = await command.ExecuteReaderAsync();
 
-	var output = new List<GasStation>();
+	var output = new List<Brand>();
 	while (reader.Read())
 	{
-		var stationId = reader.GetInt32(0)!;
-		var city = reader.GetString(1)!;
-		var address = reader.GetString(2)!;
-		var brandName = reader.GetString(3)!;
-		var brandId = reader.GetInt32(4)!;
+		var brandId = reader.GetInt32(0)!;
+		var name = reader.GetString(1)!;
 
-		output.Add(new GasStation
+		output.Add(new Brand
 		{
-			StationId = stationId,
-			City = city,
-			Address = address,
-			Brand = brandName,
-			BrandId = brandId
+			BrandId = brandId,
+			Name = name
 		});
 	}
 
 	return output;
 });
 
+// Stations GET
 app.MapGet("/stations/{brand:int}", async (string brand) =>
 {
-	using var command = new MySqlCommand("" +
+	using var command = new MySqlCommand(
 		$"SELECT id_station, city, address, brand_name, id_brand FROM stations NATURAL JOIN brands WHERE id_brand = {brand};",
 		connection);
 	using var reader = await command.ExecuteReaderAsync();
@@ -96,7 +91,7 @@ app.MapGet("/stations/{brand:int}", async (string brand) =>
 			StationId = stationId,
 			City = city,
 			Address = address,
-			Brand = brandName,
+			BrandName = brandName,
 			BrandId = brandId
 		});
 	}
