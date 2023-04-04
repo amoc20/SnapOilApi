@@ -62,12 +62,12 @@ app.MapGet("/brands", async () =>
 	var output = new List<Brand>();
 	while (reader.Read())
 	{
-		var brandId = reader.GetInt32(0)!;
+		var id = reader.GetInt32(0)!;
 		var name = reader.GetString(1)!;
 
 		output.Add(new Brand
 		{
-			BrandId = brandId,
+			Id = id,
 			Name = name
 		});
 	}
@@ -94,12 +94,12 @@ app.MapGet("/stations/{brand:int}", async (int brand) =>
 
 		output.Add(new GasStation
 		{
-			StationId = stationId,
+			Id = stationId,
 			City = city,
 			Address = address,
 			Brand = new Brand
 			{
-				BrandId = brandId,
+				Id = brandId,
 				Name = brandName
 			}
 		});
