@@ -1,7 +1,8 @@
-using System.Drawing;
-using ImageProcessing;
 using MySqlConnector;
-using WebAPI;
+using System.Drawing;
+using WebAPI.ImageProcessing;
+using WebAPI.Model;
+using WebAPI.WebAutomation;
 
 var formFiller = new FormFiller();
 var imageProcessor = new ImageProcessor();
@@ -25,7 +26,7 @@ var app = builder.Build();
 // Image processing
 app.MapPost("/uploadimg", async (IFormFile file) =>
 {
-	(double natural95, double diesel)? prices = null;
+	GasStationPrices? prices = null;
 
 	using (var memoryStream = new MemoryStream())
 	{
@@ -35,13 +36,7 @@ app.MapPost("/uploadimg", async (IFormFile file) =>
 		prices = imageProcessor.GetPrices(img, brandName);
 	}
 
-	return prices is null ? Results.NotFound() : Results.Ok(
-		new GasStationPrices
-		{
-			StationId = 0,
-			Natural95 = prices.Value.natural95,
-			Diesel = prices.Value.diesel
-		});
+	return prices is null ? Results.NotFound() : Results.Ok(prices);
 });
 
 // Prices POST

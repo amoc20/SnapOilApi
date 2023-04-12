@@ -3,12 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33110.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageProcessing", "ImageProcessing\ImageProcessing.csproj", "{BA197C9B-4509-4313-A82D-FBD4D0512613}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebAPI", "WebAPI\WebAPI.csproj", "{7A877B77-0BE9-4011-B6C3-B754A7EE6DC5}"
-	ProjectSection(ProjectDependencies) = postProject
-		{BA197C9B-4509-4313-A82D-FBD4D0512613} = {BA197C9B-4509-4313-A82D-FBD4D0512613}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -16,10 +11,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{BA197C9B-4509-4313-A82D-FBD4D0512613}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA197C9B-4509-4313-A82D-FBD4D0512613}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA197C9B-4509-4313-A82D-FBD4D0512613}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA197C9B-4509-4313-A82D-FBD4D0512613}.Release|Any CPU.Build.0 = Release|Any CPU
 		{7A877B77-0BE9-4011-B6C3-B754A7EE6DC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{7A877B77-0BE9-4011-B6C3-B754A7EE6DC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A877B77-0BE9-4011-B6C3-B754A7EE6DC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
