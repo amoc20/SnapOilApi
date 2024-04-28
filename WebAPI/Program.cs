@@ -24,16 +24,16 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 
 // Image processing
-app.MapPost("/uploadimg", async (IFormFile file) =>
+app.MapPost("/uploadimage", async (IFormFile file) =>
 {
 	GasStationPrices? prices = null;
 
 	using (var memoryStream = new MemoryStream())
 	{
 		await file.CopyToAsync(memoryStream);
-		using var img = Image.FromStream(memoryStream);
+		var bitmap = new Bitmap(memoryStream);
 		string brandName = file.FileName.Split(".").First();
-		prices = imageProcessor.GetPrices(img, brandName);
+		prices = imageProcessor.GetPrices(bitmap, brandName);
 	}
 
 	return prices is null ? Results.NotFound() : Results.Ok(prices);
@@ -50,7 +50,7 @@ app.MapPost("/uploadprices", (GasStationPrices prices) =>
 app.MapGet("/brands", async () =>
 {
 	using var command = new MySqlCommand(
-		$"SELECT * FROM brands;",
+		$"SELECT id_brand, brand_name FROM brands ORDER BY brand_name;",
 		connection);
 	using var reader = await command.ExecuteReaderAsync();
 
@@ -74,7 +74,8 @@ app.MapGet("/brands", async () =>
 app.MapGet("/stations/{brand:int}", async (int brand) =>
 {
 	using var command = new MySqlCommand(
-		$"SELECT id_station, city, address, id_brand, brand_name FROM stations NATURAL JOIN brands WHERE id_brand = {brand};",
+		$"SELECT id_station, city, address, id_brand, brand_name " +
+		$"FROM stations NATURAL JOIN brands WHERE id_brand = {brand} ORDER BY city;",
 		connection);
 	using var reader = await command.ExecuteReaderAsync();
 

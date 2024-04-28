@@ -9,11 +9,14 @@ public class FormFiller
     private readonly string URL = "https://m.ceskybenzin.cz/aktualizace.php?id=";
     private readonly string natural95Id = "p1";
     private readonly string dieselId = "p3";
+    private readonly string consentBtnCss = ".fc-button.fc-cta-consent.fc-primary-button";
 
     public void SendInfo(GasStationPrices prices)
     {
         IWebDriver driver = new ChromeDriver();
         driver.Navigate().GoToUrl(URL + prices.StationId);
+
+        driver.FindElement(By.CssSelector(consentBtnCss)).Click();
 
         var natural95Element = driver.FindElement(By.Id(natural95Id));
         natural95Element.SendKeys(prices.Natural95.ToString());
