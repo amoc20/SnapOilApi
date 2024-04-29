@@ -27,7 +27,7 @@ public static class ProcessingMethods
 
 		// Thresholding
 		Mat threshImg = new();
-		CvInvoke.Threshold(AChannel, threshImg, 175, 255, ThresholdType.Binary);
+		CvInvoke.Threshold(AChannel, threshImg, 170, 255, ThresholdType.Binary);
 
 		// Dilate and erode
 		Mat kernel = new(5, 5, DepthType.Cv8U, threshImg.NumberOfChannels);
@@ -84,7 +84,7 @@ public static class ProcessingMethods
 		string result2 = page2.GetText();
 		engine.Dispose();
 
-		return new GasStationPrices { StationId = 0, Natural95 = ConvertToDouble(result1), Diesel = ConvertToDouble(result2) };
+		return new GasStationPrices { StationId = 0, Natural95 = ConvertToDouble(result2), Diesel = ConvertToDouble(result1) };
 	}
 
 	public static GasStationPrices OjlProcess(Bitmap bitmap)
@@ -92,7 +92,7 @@ public static class ProcessingMethods
 		return new GasStationPrices { StationId = 0, Natural95 = 37.5, Diesel = 36.9 };
 	}
 
-	private static double ConvertToDouble(string text)
+	static double ConvertToDouble(string text)
 	{
 		string digits = "";
 
@@ -103,8 +103,12 @@ public static class ProcessingMethods
 				digits += ch;
 			}
 		}
-		int number = int.Parse(digits);
 
-		return (double)number / 100;
+		bool isNumber = int.TryParse(digits, out int result);
+
+		if (isNumber)
+			return (double)result / 100;
+
+		return 0;
 	}
 }
